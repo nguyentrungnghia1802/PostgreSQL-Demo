@@ -67,15 +67,24 @@ Frontend will run at: http://localhost:5173
 
 ## Database Schema
 
-| Table | Demo Feature |
-|-------|-------------|
-| `products` | JSONB attributes, Array tags |
-| `accounts` | ACID transactions |
-| `transfer_logs` | Custom ENUM type |
-| `stores` | PostGIS geography |
-| `product_embeddings` | pgvector similarity search |
-| `sales` | Large dataset for optimizer demo |
-| `audit_logs` | Trigger-based audit trail |
+| Table | Demo Feature | Description |
+|-------|-------------|-------------|
+| `products` | JSONB attributes, Array tags | Flexible product data with JSONB and tag arrays |
+| `accounts` | ACID transactions | Alice & Bob accounts for transfer demo |
+| `transfer_logs` | Custom ENUM type | Fund transfer history with `transfer_status` ENUM |
+| `stores` | PostGIS geography | Store locations in Hanoi for nearest-store search |
+| `product_embeddings` | pgvector similarity search | Mock VECTOR(3) embeddings for AI semantic search |
+| `sales` | Large dataset for optimizer demo | ~100,000 rows for EXPLAIN ANALYZE performance demo |
+| `audit_logs` | Trigger-based audit trail | Auto-populated by trigger on products UPDATE |
+
+### Reset Database
+
+To wipe all data and re-initialize from scratch:
+
+```bash
+docker compose down -v
+docker compose up -d postgres
+```
 
 ## Troubleshooting
 
