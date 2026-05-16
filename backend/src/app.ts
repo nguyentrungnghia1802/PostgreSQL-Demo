@@ -17,7 +17,7 @@ app.use('/api/health', healthRoutes);
 app.use('/api/demo', demoRoutes);
 app.use('/api/demo/jsonb', jsonbRoutes);
 app.use('/api/demo/transaction', transactionRoutes);
-app.use('/api/demo', extensionRoutes);
+app.use('/api/demo/extensions', extensionRoutes);
 app.use('/api/demo/optimizer', optimizerRoutes);
 
 // 404 handler

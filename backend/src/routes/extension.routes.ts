@@ -1,47 +1,40 @@
 import { Router } from 'express';
 import { asyncHandler } from '../utils/asyncHandler';
 import { sendSuccess } from '../utils/apiResponse';
-import { findNearbyStores, semanticSearch } from '../services/extension.service';
+import { findNearestStores, semanticSearchByType } from '../services/extension.service';
 
 const router = Router();
 
-// PostGIS — tìm cửa hàng gần nhất
-router.get('/postgis/nearby', asyncHandler(async (req, res) => {
-  const lat = parseFloat((req.query.lat as string) ?? '21.0285');
-  const lon = parseFloat((req.query.lon as string) ?? '105.8542');
-  const radiusKm = parseFloat((req.query.radius as string) ?? '5');
+// GET /api/demo/extensions/postgis/nearest
+router.get('/postgis/nearest', asyncHandler(async (req, res) => {
+  const lat   = parseFloat(String(req.query.lat   ?? '21.0285'));
+  const lng   = parseFloat(String(req.query.lng   ?? '105.8542'));
+  const limit = parseInt(String(req.query.limit   ?? '5'), 10);
 
-  const { sql, rows } = await findNearbyStores(lat, lon, radiusKm);
+  const { sql, rows } = await findNearestStores(lat, lng, limit);
   return sendSuccess(res, {
-    feature: 'PostGIS — Spatial Query',
+    feature: 'PostGIS — Nearest Stores',
     sql,
-    data: { query: { lat, lon, radiusKm }, stores: rows },
+    data: { query: { lat, lng, limit }, stores: rows },
     explanation:
-      'PostGIS mở rộng PostgreSQL với kiểu dữ liệu địa lý (GEOGRAPHY). ' +
-      'ST_DWithin tìm cửa hàng trong bán kính, ST_Distance tính khoảng cách chính xác. ' +
-      'GiST index giúp spatial query cực kỳ nhanh ngay cả với triệu điểm dữ liệu.',
+      'PostGIS extends PostgreSQL with geographic data types (GEOGRAPHY). ' +
+      'ST_MakePoint(lng, lat) creates a point. The <-> operator uses a GiST index ' +
+      'for fast nearest-neighbor search. ST_Distance returns exact distance in meters.',
   });
 }));
 
-// pgvector — semantic search
+// POST /api/demo/extensions/pgvector/search
 router.post('/pgvector/search', asyncHandler(async (req, res) => {
-  const { vector } = req.body;
-  if (!Array.isArray(vector) || vector.length !== 3) {
-    return res.status(400).json({
-      success: false,
-      message: 'Body phải có trường "vector" là mảng 3 số thực (demo dùng VECTOR(3))',
-    });
-  }
-
-  const { sql, rows } = await semanticSearch(vector);
+  const queryType = String(req.body.queryType ?? 'travel_camera');
+  const { sql, rows, vector } = await semanticSearchByType(queryType);
   return sendSuccess(res, {
     feature: 'pgvector — Semantic Search',
     sql,
-    data: { queryVector: vector, results: rows },
+    data: { queryType, vector, results: rows },
     explanation:
-      'pgvector mở rộng PostgreSQL với kiểu VECTOR và toán tử <=> (cosine distance). ' +
-      'Có thể lưu embedding từ AI model (OpenAI, Sentence Transformers...) và tìm kiếm ngữ nghĩa ' +
-      'ngay trong database, không cần Pinecone hay vector database riêng.',
+      'pgvector extends PostgreSQL with the VECTOR type and <-> distance operator. ' +
+      'Embeddings from AI models (OpenAI, Sentence Transformers…) are stored directly ' +
+      'in the database. Nearest-neighbor search runs with an IVFFlat or HNSW index.',
   });
 }));
 
