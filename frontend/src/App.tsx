@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
 import { checkBackendHealth, checkDatabaseHealth } from './services/api';
 import JsonbDemoPage from './pages/JsonbDemoPage';
 import TransactionDemoPage from './pages/TransactionDemoPage';
+import OptimizerDemoPage from './pages/OptimizerDemoPage';
 
 type HealthResult = {
   status: string;
@@ -96,7 +97,7 @@ function HomePage() {
           {[
             { label: 'JSONB & Flexible Data', path: '/demo/jsonb', done: true },
             { label: 'ACID Transaction', path: '/demo/transaction', done: true },
-            { label: 'Query Optimizer', path: '/demo/optimizer', done: false },
+            { label: 'Query Optimizer', path: '/demo/optimizer', done: true },
             { label: 'PostGIS Spatial', path: '/demo/postgis', done: false },
             { label: 'pgvector Semantic Search', path: '/demo/pgvector', done: false },
             { label: 'Trigger & Audit Log', path: '/demo/trigger', done: false },
@@ -138,7 +139,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/demo/jsonb" element={<JsonbDemoPage />} />
           <Route path="/demo/transaction" element={<TransactionDemoPage />} />
-          <Route path="/demo/optimizer" element={<div className="demo-page"><h2>Query Optimizer Demo</h2><p>Coming soon...</p></div>} />
+          <Route path="/demo/optimizer" element={<OptimizerDemoPage />} />
           <Route path="/demo/postgis" element={<div className="demo-page"><h2>PostGIS Demo</h2><p>Coming soon...</p></div>} />
           <Route path="/demo/pgvector" element={<div className="demo-page"><h2>pgvector Demo</h2><p>Coming soon...</p></div>} />
           <Route path="/demo/trigger" element={<div className="demo-page"><h2>Trigger & Audit Log Demo</h2><p>Coming soon...</p></div>} />

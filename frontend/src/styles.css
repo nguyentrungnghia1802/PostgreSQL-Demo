@@ -619,3 +619,104 @@ body {
 .change-positive { color: #276749; font-weight: 600; }
 .change-negative { color: #c53030; font-weight: 600; }
 .change-neutral  { color: #718096; }
+
+/* ===================== Optimizer Demo ===================== */
+.optimizer-dataset-note {
+  background: #ebf8ff;
+  border: 1px solid #bee3f8;
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  font-size: 0.875rem;
+  color: #2b6cb0;
+  margin-bottom: 1.25rem;
+}
+
+.optimizer-controls {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.optimizer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.index-status-badge {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+.index-status-badge.index-on  { background: #c6f6d5; color: #276749; }
+.index-status-badge.index-off { background: #fed7d7; color: #9b2c2c; }
+
+.optimizer-result-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.optimizer-result-card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 0.75rem;
+}
+
+.mono { font-family: monospace; font-size: 0.95rem; }
+.slow-time { color: #c53030; font-weight: 600; }
+.fast-time { color: #276749; font-weight: 600; }
+
+.explain-summary {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.plan-badge {
+  display: inline-block;
+  padding: 0.35rem 0.9rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  background: #e2e8f0;
+  color: #4a5568;
+}
+.plan-badge.seq-scan    { background: #fed7d7; color: #9b2c2c; }
+.plan-badge.index-scan  { background: #c6f6d5; color: #276749; }
+
+.explain-time { font-size: 0.9rem; color: #4a5568; }
+
+.explain-details summary {
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #3182ce;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.explain-json {
+  background: #1a202c;
+  color: #e2e8f0;
+  font-family: monospace;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  max-height: 400px;
+  overflow-y: auto;
+  white-space: pre;
+}
