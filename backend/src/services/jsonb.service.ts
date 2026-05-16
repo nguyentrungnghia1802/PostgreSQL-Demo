@@ -1,6 +1,11 @@
 import pool from '../db';
 
-export const queryJsonb = async (category?: string, brand?: string) => {
+export const queryJsonb = async (
+  category?: string,
+  brand?: string,
+  color?: string,
+  tag?: string
+) => {
   const conditions: string[] = [];
   const params: any[] = [];
   let idx = 1;
@@ -13,17 +18,30 @@ export const queryJsonb = async (category?: string, brand?: string) => {
     conditions.push(`attributes->>'brand' = $${idx++}`);
     params.push(brand);
   }
+  if (color) {
+    conditions.push(`attributes->>'color' = $${idx++}`);
+    params.push(color);
+  }
+  if (tag) {
+    conditions.push(`$${idx++} = ANY(tags)`);
+    params.push(tag);
+  }
 
   const where = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
-  const sql = `
-    SELECT id, name, category, price, tags, attributes
-    FROM products
-    ${where}
-    ORDER BY name
-  `;
 
-  const result = await pool.query(sql, params);
-  return { sql: sql.trim(), rows: result.rows };
+  // Build human-readable demo SQL
+  const demoConditions: string[] = [];
+  if (category) demoConditions.push(`category = '${category}'`);
+  if (brand) demoConditions.push(`attributes->>'brand' = '${brand}'`);
+  if (color) demoConditions.push(`attributes->>'color' = '${color}'`);
+  if (tag) demoConditions.push(`tags @> ARRAY['${tag}']`);
+  const demoWhere = demoConditions.length > 0 ? `WHERE ${demoConditions.join('\n  AND ')}` : '';
+
+  const displaySql = `SELECT name, category, price, attributes, tags\nFROM products\n${demoWhere ? demoWhere + '\n' : ''}ORDER BY name;`;
+
+  const execSql = `SELECT id, name, category, price, tags, attributes FROM products ${where} ORDER BY name`;
+  const result = await pool.query(execSql, params);
+  return { sql: displaySql, rows: result.rows };
 };
 
 export const queryByTag = async (tag: string) => {

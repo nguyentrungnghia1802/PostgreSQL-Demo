@@ -184,3 +184,356 @@ body {
   background: #fff5f5;
   border-left-color: #e53e3e;
 }
+
+/* ===================== Navigation ===================== */
+.app-nav {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.nav-link {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  padding: 0.35rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+.nav-link.active {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* ===================== Feature Cards ===================== */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.feature-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.feature-ready {
+  background: #ebf8ff;
+  color: #2b6cb0;
+  border: 1px solid #bee3f8;
+}
+
+.feature-ready:hover {
+  background: #bee3f8;
+}
+
+.feature-coming {
+  background: #f7fafc;
+  color: #a0aec0;
+  border: 1px solid #e2e8f0;
+  cursor: default;
+  pointer-events: none;
+}
+
+.feature-status {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+/* ===================== Demo Pages ===================== */
+.demo-page {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.demo-title {
+  font-size: 1.5rem;
+  color: #1a365d;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 3px solid #2b6cb0;
+}
+
+.scenario-box {
+  background: #fffbeb;
+  border-left: 4px solid #d69e2e;
+  padding: 1rem 1.25rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #744210;
+}
+
+/* ===================== Filter Form ===================== */
+.filter-form {
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.filter-form h3 {
+  font-size: 1rem;
+  color: #4a5568;
+  margin-bottom: 1rem;
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.filter-field label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #718096;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.filter-field input,
+.filter-field select {
+  padding: 0.45rem 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  background: white;
+  color: #1a202c;
+}
+
+.filter-field input:focus,
+.filter-field select:focus {
+  outline: none;
+  border-color: #3182ce;
+  box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.2);
+}
+
+/* ===================== Results Table ===================== */
+.result-count {
+  font-size: 0.9rem;
+  color: #4a5568;
+  margin-bottom: 0.75rem;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.data-table th {
+  background: #2b6cb0;
+  color: white;
+  padding: 0.6rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.data-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: top;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tr:hover td {
+  background: #f7fafc;
+}
+
+.json-cell {
+  font-size: 0.75rem;
+  font-family: 'Courier New', monospace;
+  background: #f0fff4;
+  border: 1px solid #c6f6d5;
+  border-radius: 4px;
+  padding: 0.4rem 0.6rem;
+  white-space: pre-wrap;
+  max-width: 220px;
+  overflow: auto;
+}
+
+.tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.tag-badge {
+  background: #ebf8ff;
+  color: #2c5282;
+  border: 1px solid #bee3f8;
+  border-radius: 12px;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.category-badge {
+  background: #e9d8fd;
+  color: #44337a;
+  border-radius: 4px;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.empty-result {
+  text-align: center;
+  color: #a0aec0;
+  padding: 2rem;
+  font-style: italic;
+  margin-bottom: 1.5rem;
+}
+
+/* ===================== SQL Panel ===================== */
+.sql-panel {
+  background: #1a202c;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.sql-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 1rem;
+  background: #2d3748;
+}
+
+.sql-panel-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #a0aec0;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.btn-copy {
+  background: transparent;
+  border: 1px solid #4a5568;
+  color: #a0aec0;
+  padding: 0.25rem 0.65rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-copy:hover {
+  background: #4a5568;
+  color: white;
+}
+
+.sql-code {
+  padding: 1.25rem;
+  color: #68d391;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ===================== Explanation Box ===================== */
+.explanation-box {
+  background: #ebf8ff;
+  border: 1px solid #bee3f8;
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+.explanation-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.explanation-icon {
+  background: #3182ce;
+  color: white;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.explanation-feature {
+  font-weight: 700;
+  color: #2b6cb0;
+  font-size: 0.9rem;
+}
+
+.explanation-text {
+  color: #2c5282;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.explanation-bullets {
+  margin-top: 0.75rem;
+  padding-left: 1.25rem;
+  color: #2c5282;
+  font-size: 0.85rem;
+  line-height: 1.8;
+}
+
+/* ===================== Error ===================== */
+.error-box {
+  background: #fff5f5;
+  border: 1px solid #feb2b2;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  color: #c53030;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}

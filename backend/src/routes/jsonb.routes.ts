@@ -6,8 +6,10 @@ import { queryJsonb, queryByTag, queryJsonbOperators } from '../services/jsonb.s
 const router = Router();
 
 router.get('/', asyncHandler(async (req, res) => {
-  const { category, brand } = req.query as { category?: string; brand?: string };
-  const { sql, rows } = await queryJsonb(category, brand);
+  const { category, brand, color, tag } = req.query as {
+    category?: string; brand?: string; color?: string; tag?: string;
+  };
+  const { sql, rows } = await queryJsonb(category, brand, color, tag);
   return sendSuccess(res, {
     feature: 'JSONB & Flexible Data',
     sql,
