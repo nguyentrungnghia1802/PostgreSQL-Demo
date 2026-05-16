@@ -5,6 +5,7 @@ import JsonbDemoPage from './pages/JsonbDemoPage';
 import TransactionDemoPage from './pages/TransactionDemoPage';
 import OptimizerDemoPage from './pages/OptimizerDemoPage';
 import ExtensionDemoPage from './pages/ExtensionDemoPage';
+import EnterpriseDemoPage from './pages/EnterpriseDemoPage';
 
 type HealthResult = {
   status: string;
@@ -101,7 +102,7 @@ function HomePage() {
             { label: 'Query Optimizer', path: '/demo/optimizer', done: true },
             { label: 'PostGIS Spatial', path: '/demo/postgis', done: true },
             { label: 'pgvector Semantic Search', path: '/demo/pgvector', done: true },
-            { label: 'Trigger & Audit Log', path: '/demo/trigger', done: false },
+            { label: 'Trigger & Audit Log', path: '/demo/trigger', done: true },
           ].map(({ label, path, done }) => (
             <NavLink
               key={path}
@@ -143,7 +144,7 @@ function App() {
           <Route path="/demo/optimizer" element={<OptimizerDemoPage />} />
           <Route path="/demo/postgis" element={<ExtensionDemoPage />} />
           <Route path="/demo/pgvector" element={<ExtensionDemoPage />} />
-          <Route path="/demo/trigger" element={<div className="demo-page"><h2>Trigger & Audit Log Demo</h2><p>Coming soon...</p></div>} />
+          <Route path="/demo/trigger" element={<EnterpriseDemoPage />} />
         </Routes>
       </div>
     </BrowserRouter>

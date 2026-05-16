@@ -6,6 +6,7 @@ import jsonbRoutes from './routes/jsonb.routes';
 import transactionRoutes from './routes/transaction.routes';
 import extensionRoutes from './routes/extension.routes';
 import optimizerRoutes from './routes/optimizer.routes';
+import enterpriseRoutes from './routes/enterprise.routes';
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use('/api/demo/jsonb', jsonbRoutes);
 app.use('/api/demo/transaction', transactionRoutes);
 app.use('/api/demo/extensions', extensionRoutes);
 app.use('/api/demo/optimizer', optimizerRoutes);
+app.use('/api/demo/enterprise', enterpriseRoutes);
 
 // 404 handler
 app.use((_req: Request, res: Response) => {
