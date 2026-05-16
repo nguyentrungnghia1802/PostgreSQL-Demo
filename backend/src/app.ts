@@ -1,6 +1,11 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import healthRoutes from './routes/health.routes';
+import demoRoutes from './routes/demo.routes';
+import jsonbRoutes from './routes/jsonb.routes';
+import transactionRoutes from './routes/transaction.routes';
+import extensionRoutes from './routes/extension.routes';
+import optimizerRoutes from './routes/optimizer.routes';
 
 const app = express();
 
@@ -9,6 +14,11 @@ app.use(express.json());
 
 // Routes
 app.use('/api/health', healthRoutes);
+app.use('/api/demo', demoRoutes);
+app.use('/api/demo/jsonb', jsonbRoutes);
+app.use('/api/demo/transaction', transactionRoutes);
+app.use('/api/demo', extensionRoutes);
+app.use('/api/demo/optimizer', optimizerRoutes);
 
 // 404 handler
 app.use((_req: Request, res: Response) => {
