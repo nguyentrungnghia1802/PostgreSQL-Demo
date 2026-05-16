@@ -5,7 +5,7 @@ import {
   getTransactionState,
   resetTransactionDemo,
   transferSuccess,
-  transferRollback,
+  transferFailure,
 } from '../services/transaction.service';
 
 const router = Router();
@@ -24,36 +24,41 @@ router.post('/reset', asyncHandler(async (_req, res) => {
   const state = await getTransactionState();
   return sendSuccess(res, {
     feature: 'ACID Transaction Reset',
-    sql: `DELETE FROM transfer_logs;\nUPSERT accounts SET balance = ... WHERE owner_name IN ('Alice','Bob');`,
+    sql: "DELETE FROM transfer_logs;\nUPSERT accounts SET balance = ... WHERE owner_name IN ('Alice','Bob');",
     data: state,
     explanation: 'Reset lại số dư Alice = 10,000,000 VND, Bob = 2,000,000 VND. Xóa toàn bộ transfer_logs.',
   });
 }));
 
-router.post('/transfer/success', asyncHandler(async (req, res) => {
-  const amount = Number(req.body?.amount ?? 500000);
-  const sql = await transferSuccess(amount);
-  const state = await getTransactionState();
+router.post('/success', asyncHandler(async (_req, res) => {
+  const result = await transferSuccess();
   return sendSuccess(res, {
-    feature: 'ACID Transaction — COMMIT',
-    sql,
-    data: { amount, ...state },
+    feature: 'ACID Transaction',
+    sql: result.sql,
+    data: {
+      beforeState: result.beforeState,
+      afterState: result.afterState,
+      transactionStatus: result.transactionStatus,
+    },
     explanation:
-      'Chuyển tiền thành công: debit Alice và credit Bob trong một transaction. ' +
-      'Nếu bất kỳ bước nào lỗi, toàn bộ transaction bị ROLLBACK — đảm bảo tính Atomicity.',
+      'Chuyển 3,000,000 VND từ Alice sang Bob thành công. ' +
+      'SELECT ... FOR UPDATE giữ row-level lock suốt transaction. ' +
+      'COMMIT đảm bảo toàn bộ thay đổi được lưu vĩnh viễn (Durability).',
   });
 }));
 
-router.post('/transfer/rollback', asyncHandler(async (req, res) => {
-  const amount = Number(req.body?.amount ?? 999999999);
-  const sql = await transferRollback(amount);
-  const state = await getTransactionState();
+router.post('/failure', asyncHandler(async (_req, res) => {
+  const result = await transferFailure();
   return sendSuccess(res, {
-    feature: 'ACID Transaction — ROLLBACK',
-    sql,
-    data: { amount, ...state },
+    feature: 'ACID Transaction',
+    sql: result.sql,
+    data: {
+      beforeState: result.beforeState,
+      afterState: result.afterState,
+      transactionStatus: result.transactionStatus,
+    },
     explanation:
-      'Transaction bị ROLLBACK do lỗi xảy ra giữa chừng. ' +
+      'Transaction bị ROLLBACK do lỗi xảy ra giữa chừng (division by zero). ' +
       'Số dư Alice và Bob không thay đổi — PostgreSQL đảm bảo Atomicity.',
   });
 }));

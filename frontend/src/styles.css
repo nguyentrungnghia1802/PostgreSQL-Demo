@@ -537,3 +537,85 @@ body {
   font-size: 0.875rem;
   margin-bottom: 1rem;
 }
+
+/* ===================== Transaction Demo ===================== */
+.tx-state-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.tx-state-card h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 1rem;
+}
+
+.tx-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.btn {
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.btn-primary  { background: #3182ce; color: #fff; }
+.btn-secondary{ background: #718096; color: #fff; }
+.btn-success  { background: #38a169; color: #fff; }
+.btn-danger   { background: #e53e3e; color: #fff; }
+.btn-warning  { background: #d69e2e; color: #fff; }
+
+.btn-primary:hover:not(:disabled)   { opacity: 0.88; }
+.btn-secondary:hover:not(:disabled) { opacity: 0.88; }
+.btn-success:hover:not(:disabled)   { opacity: 0.88; }
+.btn-danger:hover:not(:disabled)    { opacity: 0.88; }
+.btn-warning:hover:not(:disabled)   { opacity: 0.88; }
+
+.loading-text {
+  color: #718096;
+  font-size: 0.875rem;
+  margin-top: 0.75rem;
+}
+
+.tx-result-section {
+  margin-bottom: 1.5rem;
+}
+
+.tx-status-badge {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+.tx-status-badge.committed {
+  background: #c6f6d5;
+  color: #276749;
+}
+.tx-status-badge.rolledback {
+  background: #fed7d7;
+  color: #9b2c2c;
+}
+
+.tx-before-after td.balance-cell  { font-family: monospace; font-size: 0.95rem; }
+.tx-before-after td.center        { text-align: center; vertical-align: middle; }
+
+.change-positive { color: #276749; font-weight: 600; }
+.change-negative { color: #c53030; font-weight: 600; }
+.change-neutral  { color: #718096; }
