@@ -1,0 +1,101 @@
+Điểm mạnh của PostgreSQL so với các database khác
+1. Hỗ trợ dữ liệu phức tạp mạnh hơn MySQL
+
+PostgreSQL hỗ trợ rất tốt:
+
+JSON / JSONB
+Array
+UUID
+XML
+Custom Type
+
+Ví dụ:
+
+SELECT * FROM users
+WHERE info->>'city' = 'Hanoi';
+
+=> PostgreSQL vừa làm được SQL truyền thống vừa gần giống NoSQL.
+
+Trong khi đó:
+
+MySQL mạnh về đơn giản và tốc độ cơ bản
+Nhưng xử lý dữ liệu phức tạp kém linh hoạt hơn PostgreSQL.
+2. ACID và Transaction cực kỳ mạnh
+
+PostgreSQL nổi tiếng về:
+
+độ an toàn dữ liệu
+transaction chuẩn
+rollback chính xác
+
+Rất phù hợp cho:
+
+ngân hàng
+tài chính
+thương mại điện tử
+
+Ví dụ:
+
+BEGIN;
+UPDATE account SET balance = balance - 100;
+UPDATE account SET balance = balance + 100;
+COMMIT;
+
+Nếu lỗi giữa chừng → tự rollback.
+
+3. Khả năng mở rộng cao
+
+PostgreSQL hỗ trợ:
+
+Partitioning
+Replication
+Parallel Query
+Sharding (qua extension)
+
+=> phù hợp hệ thống lớn.
+
+Nhiều công ty lớn dùng PostgreSQL:
+
+Instagram
+Spotify
+Reddit
+4. Hỗ trợ nhiều extension mạnh
+
+Một điểm cực mạnh của PostgreSQL là ecosystem extension.
+
+Ví dụ:
+
+PostGIS → xử lý bản đồ/GPS
+pgvector → AI vector search
+TimescaleDB → time-series data
+
+Hiện nay PostgreSQL rất phổ biến trong AI vì hỗ trợ vector database thông qua pgvector.
+
+5. Query optimizer thông minh
+
+PostgreSQL tối ưu truy vấn rất tốt với:
+
+complex JOIN
+subquery
+analytics query
+
+Thường hiệu quả hơn MySQL khi hệ thống lớn và query phức tạp.
+
+6. Open-source nhưng “enterprise-level”
+
+Khác với nhiều DB miễn phí khác, PostgreSQL có:
+
+độ ổn định cao
+bảo mật mạnh
+nhiều tính năng enterprise
+
+Nên nhiều người gọi PostgreSQL là:
+
+“Oracle miễn phí”
+
+So với:
+
+Oracle Database → mạnh nhưng rất đắt
+Microsoft SQL Server → tốt nhưng phụ thuộc hệ sinh thái Microsoft
+
+PostgreSQL cho nhiều tính năng tương tự nhưng miễn phí.
