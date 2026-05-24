@@ -14,6 +14,54 @@ type HealthResult = {
   result?: number;
 };
 
+const FEATURE_CARDS = [
+  {
+    label: 'Flexible Data',
+    path: '/demo/jsonb',
+    tags: ['JSONB', 'Array', 'UUID', 'GIN Index'],
+    desc: 'Store flexible product attributes with JSONB, multi-value tags with Array, and collision-resistant IDs with UUID.',
+  },
+  {
+    label: 'ACID Transaction',
+    path: '/demo/transaction',
+    tags: ['Commit', 'Rollback', 'FOR UPDATE'],
+    desc: 'Watch PostgreSQL guarantee atomic transfers — rollback leaves zero partial state.',
+  },
+  {
+    label: 'PostgreSQL Extensions',
+    path: '/demo/extensions',
+    tags: ['PostGIS', 'pgvector'],
+    desc: 'Find nearest stores with geospatial queries and run AI semantic search — all inside PostgreSQL.',
+  },
+  {
+    label: 'Query Optimizer',
+    path: '/demo/optimizer',
+    tags: ['Index', 'EXPLAIN ANALYZE'],
+    desc: 'Compare Seq Scan vs Index Scan and read real execution plans with EXPLAIN ANALYZE.',
+  },
+  {
+    label: 'Enterprise Features',
+    path: '/demo/enterprise',
+    tags: ['Constraint', 'Trigger', 'Audit Log', 'View'],
+    desc: 'Schema-level data validation, automatic audit logging via triggers, and reusable analytical views.',
+  },
+] as const;
+
+const FEATURE_MAP = [
+  { feature: 'UUID',             demo: 'Flexible Data',  why: 'Safer primary keys for distributed systems' },
+  { feature: 'JSONB',            demo: 'Flexible Data',  why: 'Flexible document-like attributes per product' },
+  { feature: 'Array',            demo: 'Flexible Data',  why: 'Store multi-value tags in a single column' },
+  { feature: 'GIN Index',        demo: 'Flexible Data',  why: 'Speed up JSONB and Array queries' },
+  { feature: 'Custom Type',      demo: 'Transaction',    why: 'Strict status values enforced at schema level' },
+  { feature: 'ACID Transaction', demo: 'Transaction',    why: 'Prevent partial updates across operations' },
+  { feature: 'Rollback',         demo: 'Transaction',    why: 'Recover cleanly from mid-process failure' },
+  { feature: 'PostGIS',          demo: 'Extensions',     why: 'Geospatial search natively inside the database' },
+  { feature: 'pgvector',         demo: 'Extensions',     why: 'AI semantic search without a separate vector store' },
+  { feature: 'EXPLAIN ANALYZE',  demo: 'Optimizer',      why: 'Understand how PostgreSQL executes a query' },
+  { feature: 'Trigger',          demo: 'Enterprise',     why: 'Automatic audit log on every row change' },
+  { feature: 'View',             demo: 'Enterprise',     why: 'Reusable analytics query stored as a named object' },
+] as const;
+
 function HomePage() {
   const [backendResult, setBackendResult] = useState<HealthResult | null>(null);
   const [dbResult, setDbResult] = useState<HealthResult | null>(null);
@@ -52,10 +100,58 @@ function HomePage() {
 
   return (
     <main className="app-main">
+      {/* ── Hero subtitle ── */}
+      <div className="home-hero">
+        <p>A focused demo platform for showing PostgreSQL's strongest DBMS capabilities.</p>
+      </div>
+
+      {/* ── Demo Modules ── */}
+      <section className="home-section">
+        <h2>Demo Modules</h2>
+        <div className="feature-grid-v2">
+          {FEATURE_CARDS.map(({ label, path, tags, desc }) => (
+            <NavLink key={path} to={path} className="feature-card-v2">
+              <div className="fc-header">
+                <span className="fc-label">{label}</span>
+                <span className="fc-arrow">→</span>
+              </div>
+              <p className="fc-desc">{desc}</p>
+              <div className="fc-tags">
+                {tags.map(t => <span key={t} className="fc-tag">{t}</span>)}
+              </div>
+            </NavLink>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Feature Mapping Table ── */}
+      <section className="home-section">
+        <h2>PostgreSQL Feature Mapping</h2>
+        <table className="feature-map-table">
+          <thead>
+            <tr>
+              <th>PostgreSQL Feature</th>
+              <th>Demo Screen</th>
+              <th>Why It Matters</th>
+            </tr>
+          </thead>
+          <tbody>
+            {FEATURE_MAP.map(row => (
+              <tr key={row.feature}>
+                <td><code>{row.feature}</code></td>
+                <td>{row.demo}</td>
+                <td>{row.why}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      {/* ── Health Check ── */}
       <section className="home-section">
         <h2>System Health Check</h2>
         <p style={{ color: '#718096', fontSize: '0.9rem', marginBottom: '1rem' }}>
-          Verify that backend and database connections are working correctly.
+          Verify backend and database connectivity before running demos.
         </p>
         <div className="health-grid">
           <div className="health-card">
@@ -92,32 +188,11 @@ function HomePage() {
           </div>
         </div>
       </section>
-
-      <section className="home-section">
-        <h2>Available Demo Modules</h2>
-        <div className="feature-grid">
-          {[
-            { label: 'JSONB & Flexible Data', path: '/demo/jsonb', done: true },
-            { label: 'ACID Transaction', path: '/demo/transaction', done: true },
-            { label: 'Query Optimizer', path: '/demo/optimizer', done: true },
-            { label: 'PostGIS Spatial', path: '/demo/postgis', done: true },
-            { label: 'pgvector Semantic Search', path: '/demo/pgvector', done: true },
-            { label: 'Trigger & Audit Log', path: '/demo/trigger', done: true },
-          ].map(({ label, path, done }) => (
-            <NavLink
-              key={path}
-              to={path}
-              className={`feature-card ${done ? 'feature-ready' : 'feature-coming'}`}
-            >
-              <span>{label}</span>
-              <span className="feature-status">{done ? '→' : 'Coming soon'}</span>
-            </NavLink>
-          ))}
-        </div>
-      </section>
     </main>
   );
 }
+
+const navClass = ({ isActive }: { isActive: boolean }) => isActive ? 'nav-link active' : 'nav-link';
 
 function App() {
   return (
@@ -125,15 +200,13 @@ function App() {
       <div className="app-container">
         <header className="app-header">
           <h1>PostgreSQL Feature Showcase</h1>
-          <p>A demo tool showcasing the strengths of PostgreSQL as a modern, enterprise-grade DBMS</p>
           <nav className="app-nav">
-            <NavLink to="/" end className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Home</NavLink>
-            <NavLink to="/demo/jsonb" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>JSONB</NavLink>
-            <NavLink to="/demo/transaction" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Transaction</NavLink>
-            <NavLink to="/demo/optimizer" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Optimizer</NavLink>
-            <NavLink to="/demo/postgis" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>PostGIS</NavLink>
-            <NavLink to="/demo/pgvector" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>pgvector</NavLink>
-            <NavLink to="/demo/trigger" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Trigger</NavLink>
+            <NavLink to="/" end className={navClass}>Home</NavLink>
+            <NavLink to="/demo/jsonb" className={navClass}>Flexible Data</NavLink>
+            <NavLink to="/demo/transaction" className={navClass}>Transaction</NavLink>
+            <NavLink to="/demo/extensions" className={navClass}>Extensions</NavLink>
+            <NavLink to="/demo/optimizer" className={navClass}>Optimizer</NavLink>
+            <NavLink to="/demo/enterprise" className={navClass}>Enterprise</NavLink>
           </nav>
         </header>
 
@@ -142,6 +215,10 @@ function App() {
           <Route path="/demo/jsonb" element={<JsonbDemoPage />} />
           <Route path="/demo/transaction" element={<TransactionDemoPage />} />
           <Route path="/demo/optimizer" element={<OptimizerDemoPage />} />
+          {/* canonical extension routes */}
+          <Route path="/demo/extensions" element={<ExtensionDemoPage />} />
+          <Route path="/demo/enterprise" element={<EnterpriseDemoPage />} />
+          {/* legacy aliases kept for backward compat */}
           <Route path="/demo/postgis" element={<ExtensionDemoPage />} />
           <Route path="/demo/pgvector" element={<ExtensionDemoPage />} />
           <Route path="/demo/trigger" element={<EnterpriseDemoPage />} />

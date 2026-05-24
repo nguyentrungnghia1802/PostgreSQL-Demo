@@ -855,6 +855,152 @@ body {
   margin: 0;
 }
 
+/* ===================== Home Hero ===================== */
+.home-hero {
+  background: linear-gradient(135deg, #ebf8ff 0%, #e9f7ef 100%);
+  border: 1px solid #bee3f8;
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #2c5282;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* ===================== Feature Cards v2 ===================== */
+.feature-grid-v2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.feature-card-v2 {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.1rem 1.2rem;
+  border-radius: 10px;
+  text-decoration: none;
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s;
+}
+
+.feature-card-v2:hover {
+  background: #ebf8ff;
+  border-color: #90cdf4;
+  box-shadow: 0 2px 8px rgba(43, 108, 176, 0.12);
+  transform: translateY(-2px);
+}
+
+.fc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fc-label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a365d;
+}
+
+.fc-arrow {
+  font-size: 1rem;
+  color: #2b6cb0;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.feature-card-v2:hover .fc-arrow {
+  opacity: 1;
+}
+
+.fc-desc {
+  font-size: 0.82rem;
+  color: #4a5568;
+  line-height: 1.5;
+}
+
+.fc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.25rem;
+}
+
+.fc-tag {
+  background: #ebf8ff;
+  color: #2b6cb0;
+  border: 1px solid #bee3f8;
+  padding: 0.15rem 0.55rem;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+}
+
+/* ===================== Feature Map Table ===================== */
+.feature-map-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.feature-map-table thead tr {
+  background: #1a365d;
+  color: white;
+}
+
+.feature-map-table thead th {
+  padding: 0.65rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.feature-map-table thead th:first-child {
+  border-radius: 6px 0 0 0;
+}
+
+.feature-map-table thead th:last-child {
+  border-radius: 0 6px 0 0;
+}
+
+.feature-map-table tbody tr {
+  border-bottom: 1px solid #e2e8f0;
+  transition: background 0.15s;
+}
+
+.feature-map-table tbody tr:nth-child(even) {
+  background: #f7fafc;
+}
+
+.feature-map-table tbody tr:hover {
+  background: #ebf8ff;
+}
+
+.feature-map-table tbody td {
+  padding: 0.55rem 1rem;
+  color: #4a5568;
+}
+
+.feature-map-table tbody td:first-child code {
+  background: #edf2f7;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #2d3748;
+  font-weight: 600;
+}
+
+.feature-map-table tbody td:nth-child(2) {
+  color: #2b6cb0;
+  font-weight: 500;
+}
+
 .ent-badge {
   font-size: 0.78rem;
   font-weight: 700;
