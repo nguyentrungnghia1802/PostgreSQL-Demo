@@ -1,0 +1,23 @@
+services:
+  postgres:
+    build:
+      context: ./database
+      dockerfile: Dockerfile
+    container_name: pg_feature_showcase
+    environment:
+      POSTGRES_DB: pg_feature_showcase
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5433:5432'
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d pg_feature_showcase']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pg_data:
