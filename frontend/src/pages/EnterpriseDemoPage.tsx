@@ -18,6 +18,7 @@ type Product    = Record<string, unknown>;
 export default function EnterpriseDemoPage() {
   /* ── 1. Constraint state ── */
   const [constraintLoading, setConstraintLoading] = useState(false);
+  const [constraintError, setConstraintError] = useState<string | null>(null);
   const [constraintResult, setConstraintResult] = useState<{
     constraintWorked: boolean;
     databaseError: string | null;
@@ -37,6 +38,7 @@ export default function EnterpriseDemoPage() {
     explanation: string;
   } | null>(null);
   const [logsLoading, setLogsLoading] = useState(false);
+  const [logsError, setLogsError] = useState<string | null>(null);
   const [auditLogs, setAuditLogs] = useState<AuditLog[] | null>(null);
   const [logsSql, setLogsSql] = useState('');
 
@@ -53,15 +55,19 @@ export default function EnterpriseDemoPage() {
   const handleConstraint = async () => {
     setConstraintLoading(true);
     setConstraintResult(null);
+    setConstraintError(null);
     try {
       const res  = await fetch('/api/demo/enterprise/constraint/invalid-product', { method: 'POST' });
       const json = await res.json();
+      if (!json.success && !json.data) throw new Error(json.message ?? 'Request failed');
       setConstraintResult({
         constraintWorked: json.data.constraintWorked,
         databaseError: json.data.databaseError,
         sql: json.sql,
         explanation: json.explanation,
       });
+    } catch (err) {
+      setConstraintError((err as Error).message);
     } finally {
       setConstraintLoading(false);
     }
@@ -94,11 +100,15 @@ export default function EnterpriseDemoPage() {
 
   const handleLoadLogs = async () => {
     setLogsLoading(true);
+    setLogsError(null);
     try {
       const res  = await fetch('/api/demo/enterprise/audit/logs');
       const json = await res.json();
+      if (!json.success) throw new Error(json.message ?? 'Failed to load logs');
       setAuditLogs(json.data.logs);
       setLogsSql(json.sql);
+    } catch (err) {
+      setLogsError((err as Error).message);
     } finally {
       setLogsLoading(false);
     }
@@ -121,11 +131,11 @@ export default function EnterpriseDemoPage() {
   };
 
   /* ── Helpers ── */
-  const fmt = (n: unknown) => Number(n).toLocaleString('vi-VN');
+  const fmt = (n: unknown) => (n != null ? Number(n).toLocaleString('vi-VN') : '—');
 
   return (
     <div className="demo-page">
-      <h2>Enterprise Database Features</h2>
+      <h2 className="demo-title">Enterprise Database Features</h2>
       <p className="ent-subtitle">
         Demonstrating how PostgreSQL protects data integrity at the database level —
         no application code required.
@@ -143,6 +153,8 @@ export default function EnterpriseDemoPage() {
         <button className="btn btn-danger" onClick={handleConstraint} disabled={constraintLoading}>
           {constraintLoading ? 'Running…' : 'Try Insert Invalid Product'}
         </button>
+
+        {constraintError && <div className="error-box">{constraintError}</div>}
 
         {constraintResult && (
           <>
@@ -265,6 +277,8 @@ export default function EnterpriseDemoPage() {
             />
           </>
         )}
+
+        {logsError && <div className="error-box">{logsError}</div>}
 
         {auditLogs && (
           <div className="ent-result-card" style={{ marginTop: '1rem' }}>

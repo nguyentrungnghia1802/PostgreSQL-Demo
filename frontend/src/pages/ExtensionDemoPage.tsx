@@ -92,7 +92,7 @@ export default function ExtensionDemoPage() {
 
   return (
     <div className="demo-page">
-      <h2>PostgreSQL Extension Demo</h2>
+      <h2 className="demo-title">PostgreSQL Extension Demo</h2>
       <p className="ext-subtitle">
         Showcasing <strong>PostGIS</strong> (geographic queries) and <strong>pgvector</strong> (AI semantic search) —
         two extensions that turn PostgreSQL into a spatial + AI database.
@@ -249,7 +249,7 @@ export default function ExtensionDemoPage() {
                       <tr key={i}>
                         <td>{p.name}</td>
                         <td>{p.category}</td>
-                        <td className="mono">{Number(p.price).toLocaleString()}</td>
+                        <td className="mono">{Number(p.price).toLocaleString('vi-VN')}</td>
                         <td>{p.description}</td>
                         <td className="mono dist-cell">{Number(p.distance).toFixed(4)}</td>
                       </tr>
