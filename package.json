@@ -4,6 +4,8 @@
   "description": "Root convenience scripts for PostgreSQL Feature Showcase",
   "private": true,
   "scripts": {
+    "dev": "npm run build:frontend && npm run dev:backend",
+    "start": "npm run dev:backend",
     "dev:backend": "cd backend && npm run dev",
     "dev:frontend": "cd frontend && npm run dev",
     "build:backend": "cd backend && npm run build",
