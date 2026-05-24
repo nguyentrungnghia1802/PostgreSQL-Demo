@@ -1,56 +1,123 @@
 # PostgreSQL Feature Showcase
 
-A demo web application showcasing the strengths of PostgreSQL as a modern, enterprise-grade DBMS.
+A focused demo web application showing PostgreSQL's strongest DBMS capabilities — not a production app, but a hands-on presentation tool for understanding what makes PostgreSQL stand out.
 
-## Features Demonstrated
+---
 
-| Demo | PostgreSQL Feature |
-|------|-------------------|
-| JSONB & Flexible Data | JSONB, Array, UUID, Custom Types |
-| ACID Transaction | BEGIN/COMMIT/ROLLBACK, row-level locking |
-| Query Optimizer | EXPLAIN ANALYZE, GIN/GiST indexes |
-| PostGIS | Geographic queries, nearest-store search |
-| pgvector | AI vector similarity search |
-| Enterprise Features | Constraints, Triggers, Audit Logs, Views |
+## PostgreSQL Features Demonstrated
+
+| PostgreSQL Feature | Demo Screen | SQL / Object Used | Why It Matters |
+|---|---|---|---|
+| UUID | Flexible Data | `gen_random_uuid()` | Collision-resistant IDs for distributed systems |
+| JSONB | Flexible Data | `attributes->>'brand'` | Flexible document-like attributes without a rigid schema |
+| Array | Flexible Data | `tags @> ARRAY['travel']` | Store multi-value tags in a single column |
+| GIN Index | Flexible Data | `CREATE INDEX ... USING GIN` | Speeds up JSONB and Array queries |
+| Custom ENUM | Transaction | `transfer_status` type | Schema-enforced status values |
+| ACID Transaction | Transaction | `BEGIN / COMMIT / ROLLBACK` | Prevents partial updates across multiple rows |
+| Row-level Lock | Transaction | `SELECT ... FOR UPDATE` | Serialises concurrent access to the same row |
+| PostGIS | Extensions | `ST_Distance`, `<->` operator | Geospatial search natively inside PostgreSQL |
+| pgvector | Extensions | `<->` cosine distance | AI semantic search without a separate vector store |
+| EXPLAIN ANALYZE | Optimizer | `EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON)` | Shows exactly how PostgreSQL executes a query |
+| Trigger | Enterprise | `AFTER UPDATE` trigger | Automatic audit log on every product price change |
+| View | Enterprise | `CREATE VIEW revenue_by_region` | Reusable analytics query stored as a named object |
+| CHECK Constraint | Enterprise | `CHECK (price > 0)` | Schema-level data validation, no app code needed |
+
+---
 
 ## Tech Stack
 
-- **Frontend**: React + Vite + TypeScript
-- **Backend**: Node.js + Express + TypeScript
-- **Database**: PostgreSQL 16 with PostGIS & pgvector
+| Layer | Technology |
+|---|---|
+| Frontend | React 18 + Vite 4 + TypeScript |
+| Backend | Node.js + Express + TypeScript |
+| Database | PostgreSQL 16 |
+| Extensions | pgcrypto, PostGIS 3, pgvector |
+| Container | Docker + Docker Compose |
 
-## Getting Started
+---
 
-### Prerequisites
+## Project Structure
+
+```
+postgresql-feature-showcase/
+├── package.json              # Root convenience scripts
+├── docker-compose.yml
+├── database/
+│   ├── Dockerfile            # postgres:16 + PostGIS + pgvector
+│   └── init/                 # SQL init scripts (run in alpha order)
+│       ├── 01_extensions.sql
+│       ├── 02_types.sql
+│       ├── 03_tables.sql
+│       ├── 04_indexes.sql
+│       ├── 05_triggers.sql
+│       ├── 06_seed.sql
+│       └── 07_views.sql
+├── backend/
+│   └── src/
+│       ├── app.ts
+│       ├── server.ts
+│       ├── db.ts
+│       ├── routes/
+│       ├── services/
+│       └── utils/
+├── frontend/
+│   └── src/
+│       ├── App.tsx
+│       ├── pages/
+│       ├── components/
+│       └── services/
+├── scripts/
+│   └── smoke-test.ps1        # PowerShell smoke test
+└── docs/
+    ├── demo-script-vi.md     # Vietnamese presentation script
+    └── sql-demo-queries.md   # Key SQL queries reference
+```
+
+---
+
+## Prerequisites
 
 - [Docker](https://www.docker.com/) & Docker Compose
 - [Node.js](https://nodejs.org/) v18+
 - npm v9+
 
-### 1. Start the Database
+---
+
+## Setup Instructions
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/nguyentrungnghia1802/PostgreSQL-Demo.git
+cd PostgreSQL-Demo
+git checkout feat/postgresql-feature-showcase
+```
+
+### 2. Start the database
 
 ```bash
 docker compose up -d postgres
 ```
 
-Wait for the container to be healthy:
+Wait for the container to finish initialising (runs all `database/init/*.sql` scripts):
 
 ```bash
-docker compose ps
+docker compose logs postgres --follow
+# Wait until you see: database system is ready to accept connections
 ```
 
-### 2. Start the Backend
+### 3. Start the backend
 
 ```bash
 cd backend
-cp .env.example .env
+cp .env.example .env   # only needed once
 npm install
 npm run dev
 ```
 
-Backend will run at: http://localhost:4000
+Backend runs at: **http://localhost:4000**
 
-### 3. Start the Frontend
+### 4. Start the frontend
 
 ```bash
 cd frontend
@@ -58,96 +125,104 @@ npm install
 npm run dev
 ```
 
-Frontend will run at: http://localhost:5173
+Frontend runs at: **http://localhost:5173**
 
-### 4. Health Check
+---
 
-- Backend: http://localhost:4000/api/health
-- Database: http://localhost:4000/api/health/db
+## Reset Database
 
-## Database Schema
-
-| Table | Demo Feature | Description |
-|-------|-------------|-------------|
-| `products` | JSONB attributes, Array tags | Flexible product data with JSONB and tag arrays |
-| `accounts` | ACID transactions | Alice & Bob accounts for transfer demo |
-| `transfer_logs` | Custom ENUM type | Fund transfer history with `transfer_status` ENUM |
-| `stores` | PostGIS geography | Store locations in Hanoi for nearest-store search |
-| `product_embeddings` | pgvector similarity search | Mock VECTOR(3) embeddings for AI semantic search |
-| `sales` | Large dataset for optimizer demo | ~100,000 rows for EXPLAIN ANALYZE performance demo |
-| `audit_logs` | Trigger-based audit trail | Auto-populated by trigger on products UPDATE |
-
-### Reset Database
-
-To wipe all data and re-initialize from scratch:
+Wipe all data and re-run init scripts from scratch:
 
 ```bash
 docker compose down -v
 docker compose up -d postgres
 ```
+
+Reset only demo data (accounts, audit logs, optimizer index) without rebuilding Docker:
+
+```
+POST http://localhost:4000/api/demo/reset-all
+```
+
+Or click **Reset All Demo Data** on the Home page.
+
+---
+
+## Run Checks
+
+From the repo root (requires both `backend/` and `frontend/` to have been `npm install`-ed):
+
+```bash
+npm run check
+```
+
+This runs `build:backend` then `build:frontend` in sequence.
+
+PowerShell smoke test (backend must be running on port 4000):
+
+```powershell
+.\scripts\smoke-test.ps1
+```
+
+---
+
+## Demo Flow
+
+Recommended order for a 10–12 minute presentation:
+
+1. **Home** (`/`) — show the feature mapping table and "Reset All Demo Data"
+2. **Flexible Data** (`/demo/jsonb`) — filter products by JSONB attributes and Array tags
+3. **Transaction** (`/demo/transaction`) — run a successful transfer, then a failed one; show rollback proof
+4. **Extensions** (`/demo/extensions`) — find nearest Hanoi stores; run AI semantic search
+5. **Optimizer** (`/demo/optimizer`) — drop index → Seq Scan; create index → Index Scan
+6. **Enterprise** (`/demo/enterprise`) — trigger CHECK constraint; update price and see audit log; load revenue view
+
+See [`docs/demo-script-vi.md`](docs/demo-script-vi.md) for the full Vietnamese presentation script.
+
+---
 
 ## Troubleshooting
 
-### PostGIS or pgvector not available
+### PostGIS or pgvector extension not available
 
-If `CREATE EXTENSION postgis` or `CREATE EXTENSION vector` fails:
+```bash
+docker compose down -v
+docker compose build --no-cache postgres
+docker compose up -d postgres
+```
 
-1. Ensure the custom Dockerfile was used (not the default `postgres:16` image):
-   ```bash
-   docker compose down -v
-   docker compose build postgres
-   docker compose up -d postgres
-   ```
+If packages cannot be installed in the build environment, the APIs return a descriptive error message instead of crashing.
 
-2. Check build logs:
-   ```bash
-   docker compose build --no-cache postgres
-   ```
+### Docker volume caches old init SQL
 
-### Reset Database
-
-To wipe all data and re-initialize:
+Always use `-v` when resetting to remove the named volume:
 
 ```bash
 docker compose down -v
 docker compose up -d postgres
 ```
 
+### Backend cannot connect to database
+
+1. Check `.env` has `DATABASE_URL=postgresql://postgres:postgres@localhost:5433/pg_feature_showcase`
+2. Verify the container is healthy: `docker compose ps`
+3. Port 5433 is used (not 5432) to avoid conflict with a local PostgreSQL instance.
+
 ### Port conflicts
 
-- PostgreSQL: 5433 (mapped from container port 5432, avoids conflict with local PostgreSQL on 5432) — change in `docker-compose.yml`
-- Backend: 4000 — change in `backend/.env`
-- Frontend: 5173 — change in `frontend/vite.config.ts`
+| Service | Default port | Change in |
+|---|---|---|
+| PostgreSQL (Docker) | 5433 | `docker-compose.yml` |
+| Backend | 4000 | `backend/.env` |
+| Frontend | 5173 | `frontend/vite.config.ts` |
 
-## Development
+---
 
-### Build for production
+## Team Notes
 
-```bash
-# Backend
-cd backend && npm run build
-
-# Frontend
-cd frontend && npm run build
-```
-
-### Project structure
-
-```
-postgresql-feature-showcase/
-├── docker-compose.yml
-├── database/
-│   ├── Dockerfile          # postgres:16 + PostGIS + pgvector
-│   └── init/               # SQL init scripts (run in order)
-├── backend/
-│   └── src/
-│       ├── server.ts
-│       ├── app.ts
-│       ├── db.ts
-│       └── routes/
-└── frontend/
-    └── src/
-        ├── App.tsx
-        ├── main.tsx
-        └── services/
-```
+| Role | Responsibility |
+|---|---|
+| Database | `database/init/` SQL scripts, seed data, index design |
+| Backend | Express routes and services in `backend/src/` |
+| Frontend | React pages and components in `frontend/src/` |
+| Presenter | Run through `docs/demo-script-vi.md` |
