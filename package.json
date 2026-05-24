@@ -1,0 +1,13 @@
+{
+  "name": "postgresql-feature-showcase",
+  "version": "1.0.0",
+  "description": "Root convenience scripts for PostgreSQL Feature Showcase",
+  "private": true,
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build:backend": "cd backend && npm run build",
+    "build:frontend": "cd frontend && node scripts/build.js",
+    "check": "npm run build:backend && npm run build:frontend"
+  }
+}

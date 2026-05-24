@@ -11,3 +11,15 @@ export async function checkDatabaseHealth() {
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.json();
 }
+
+export async function resetAllDemoData() {
+  const res = await fetch(`${API_BASE}/demo/reset-all`, { method: 'POST' });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+export async function getDemoCounts() {
+  const res = await fetch(`${API_BASE}/demo/counts`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}

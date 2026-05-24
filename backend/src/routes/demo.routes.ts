@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { asyncHandler } from '../utils/asyncHandler';
 import { sendSuccess } from '../utils/apiResponse';
-import { getFeatureList, getSampleProducts } from '../services/demo.service';
+import { getFeatureList, getSampleProducts, resetAll, getCounts } from '../services/demo.service';
 
 const router = Router();
 
@@ -21,6 +21,24 @@ router.get('/products/sample', asyncHandler(async (_req, res) => {
     sql,
     data: rows,
     explanation: 'Lấy vài sản phẩm mẫu để xác nhận database có dữ liệu.',
+  });
+}));
+
+router.post('/reset-all', asyncHandler(async (_req, res) => {
+  await resetAll();
+  return sendSuccess(res, {
+    feature: 'reset-all',
+    data: { reset: true, message: 'Demo data reset successfully' },
+    explanation: 'Alice/Bob balances restored, transfer_logs cleared, optimizer index dropped, audit_logs cleared.',
+  });
+}));
+
+router.get('/counts', asyncHandler(async (_req, res) => {
+  const counts = await getCounts();
+  return sendSuccess(res, {
+    feature: 'counts',
+    data: counts,
+    explanation: 'Record counts for all demo tables.',
   });
 }));
 

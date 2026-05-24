@@ -51,3 +51,31 @@ export const getSampleProducts = async () => {
   const result = await pool.query(sql);
   return { sql: sql.trim(), rows: result.rows };
 };
+
+export const resetAll = async () => {
+  // 1. Reset Alice/Bob balances and clear transfer_logs
+  await pool.query(`DELETE FROM transfer_logs`);
+  await pool.query(`UPDATE accounts SET balance = 10000000 WHERE owner_name = 'Alice'`);
+  await pool.query(`UPDATE accounts SET balance = 2000000  WHERE owner_name = 'Bob'`);
+
+  // 2. Drop optimizer index so the demo starts from Seq Scan
+  await pool.query(`DROP INDEX IF EXISTS idx_sales_region_date`);
+
+  // 3. Clear audit_logs
+  await pool.query(`DELETE FROM audit_logs`);
+};
+
+export const getCounts = async () => {
+  const sql = `
+    SELECT
+      (SELECT COUNT(*)::int FROM products)           AS products,
+      (SELECT COUNT(*)::int FROM accounts)           AS accounts,
+      (SELECT COUNT(*)::int FROM transfer_logs)      AS transfer_logs,
+      (SELECT COUNT(*)::int FROM stores)             AS stores,
+      (SELECT COUNT(*)::int FROM product_embeddings) AS product_embeddings,
+      (SELECT COUNT(*)::int FROM sales)              AS sales,
+      (SELECT COUNT(*)::int FROM audit_logs)         AS audit_logs
+  `;
+  const result = await pool.query(sql);
+  return result.rows[0];
+};

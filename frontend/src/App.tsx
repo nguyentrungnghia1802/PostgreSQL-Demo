@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
-import { checkBackendHealth, checkDatabaseHealth } from './services/api';
+import { checkBackendHealth, checkDatabaseHealth, resetAllDemoData } from './services/api';
 import JsonbDemoPage from './pages/JsonbDemoPage';
 import TransactionDemoPage from './pages/TransactionDemoPage';
 import OptimizerDemoPage from './pages/OptimizerDemoPage';
@@ -69,6 +69,19 @@ function HomePage() {
   const [dbLoading, setDbLoading] = useState(false);
   const [backendError, setBackendError] = useState<string | null>(null);
   const [dbError, setDbError] = useState<string | null>(null);
+  const [resetStatus, setResetStatus] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle');
+
+  const handleResetAll = async () => {
+    setResetStatus('loading');
+    try {
+      await resetAllDemoData();
+      setResetStatus('ok');
+      setTimeout(() => setResetStatus('idle'), 3000);
+    } catch {
+      setResetStatus('error');
+      setTimeout(() => setResetStatus('idle'), 3000);
+    }
+  };
 
   const handleBackendHealth = async () => {
     setBackendLoading(true);
@@ -103,6 +116,21 @@ function HomePage() {
       {/* ── Hero subtitle ── */}
       <div className="home-hero">
         <p>A focused demo platform for showing PostgreSQL's strongest DBMS capabilities.</p>
+        <div style={{ marginTop: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <button
+            className="btn btn-danger"
+            onClick={handleResetAll}
+            disabled={resetStatus === 'loading'}
+          >
+            {resetStatus === 'loading' ? 'Resetting...' : 'Reset All Demo Data'}
+          </button>
+          {resetStatus === 'ok' && (
+            <span className="status-badge status-ok">All demo data reset successfully</span>
+          )}
+          {resetStatus === 'error' && (
+            <span className="status-badge status-error">Reset failed — is the backend running?</span>
+          )}
+        </div>
       </div>
 
       {/* ── Demo Modules ── */}
